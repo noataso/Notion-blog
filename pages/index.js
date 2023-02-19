@@ -49,7 +49,7 @@ export default function Home({ posts }) {
           </div>
           <h1>Next.js + Notion API ブログ</h1>
           <p>
-           Notionと連携しているブログです。Notionに書き込めばそのままブログとして投稿できます。
+            Notionと連携しているブログです。Notionに書き込めばそのままブログとして投稿できます。
           </p>
         </header>
 
@@ -66,6 +66,8 @@ export default function Home({ posts }) {
             );
             return (
               <li key={post.id} className={styles.post}>
+                {console.log(post)}
+                {console.log(date)}
                 <h3 className={styles.postTitle}>
                   <Link href={`/${post.id}`}>
                     <a>
@@ -87,5 +89,14 @@ export default function Home({ posts }) {
   );
 }
 
-//SSGを追加
+// ISRを追加
+export const getStaticProps = async () => {
+  const database = await getDatabase(databaseId);
 
+  return {
+    props: {
+      posts: database,
+    },
+    revalidate: 1,
+  };
+};
